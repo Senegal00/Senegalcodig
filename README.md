@@ -1,0 +1,2 @@
+# Senegalcodig
+Código En General
