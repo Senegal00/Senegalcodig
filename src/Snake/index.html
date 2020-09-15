@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+</head>
+<body>
+    <canvas id="canvas" width="300" height="300" style="border:1px solid #000;"></canvas>
+    <div>
+        <input id="txtButtom" readonly="true" style="width: 150px;" type="text" />
+        <input id="txtState" readonly="true" style="width: 140px;" type="text" />
+    </div>
+</body>
+<script>
+    class Game {
+        Snake=[];
+        director=null;
+        direction=2;
+        sizeSquare=10;
+        canvas=null;
+        
+        constructor(txtButtom,txtState,canvas){
+            this.txtButtom = txtButtom;
+            this.txtState = txtState;
+            this.canvas = canvas;
+
+            this.ctx = this.canvas.getContext("2d");
+        }
+        Init(){
+            this.PrintState("Iniciar");
+            let square = new Object();
+            square.X=15;
+            square.Y=15;
+            this.Snake.push(square);
+
+            document.addEventListener("keypress",function(e){
+                oGame.PrintKey(e.key + " " + e.keyCode);
+
+                switch (e.keyCode) {
+                    case 49: //representan las teclas 1
+                        oGame.direction=1; //arriva
+                        break;
+                    case 50: //representan las teclas 2
+                        oGame.direction=2; //derecha
+                        break;
+                    case 51: //representan las teclas 3
+                        oGame.direction=3; //abajo
+                        break;
+                    case 53: //representan las teclas 5
+                        oGame.direction=4; //izquierda
+                        break; 
+                }
+            })
+
+            this.direction = setInterval(()=>{
+                this.Next();
+                this.Show();
+            },100)
+        };
+
+        Next(){
+            this.PrintState("Mueve: "+ this.direction);
+            switch (this.direction) {
+                case 1:
+                    this.Snake[0].Y--;
+                break;
+                case 2:
+                this.Snake[0].X++;
+                break;
+                case 3:
+                this.Snake[0].Y++;
+                break;
+                case 4:
+                this.Snake[0].X--;
+                break;
+            }
+
+        };
+        Show(){
+            /* this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+            this.Snake.map((square)=>{
+                let dw = new Image();
+                dw.src='../../../font_icons/feo.png';
+                this.ctx.drawImage(dw,
+                                    square.X * this.sizeSquare,
+                                    square.Y * this.sizeSquare);
+            }) */
+
+            this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+            this.Snake.map((square)=>{
+                this.ctx.fillStyle = "black";
+                this.ctx.drawImage(square.X * this.sizeSquare, 
+                                square.Y * this.sizeSquare, 
+                                this.sizeSquare, this.sizeSquare);
+            })  
+        };
+
+        PrintState(text) {
+            this.txtState.value = text;
+        }
+
+        PrintKey(text){
+            this.txtButtom.value = text;
+        }
+    }
+    var oGame = new Game(txtButtom,txtState,canvas);
+    oGame.Init();
+</script>
+<!-- <script src="/src/Snake/app.js"></script> -->
+</html>
